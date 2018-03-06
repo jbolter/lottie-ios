@@ -163,6 +163,12 @@
         NSString *imagePath = [asset.assetBundle pathForResource:asset.imageName ofType:nil];
         image = [UIImage imageWithContentsOfFile:imagePath];
     }
+
+    // Hack after updating from 2.1.5 -> 2.5.0
+    if (!image) {
+      NSArray *components = [asset.imageName componentsSeparatedByString:@"."];
+      image = [UIImage imageNamed:components.firstObject inBundle:asset.assetBundle compatibleWithTraitCollection:nil];
+    }
     
     if (image) {
       _wrapperLayer.contents = (__bridge id _Nullable)(image.CGImage);
